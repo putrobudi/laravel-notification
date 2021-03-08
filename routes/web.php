@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\UserNotificationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,4 @@ Route::get('/home', [HomeController::class, 'index'])
 
 Route::get('payments/create', [PaymentsController::class, 'create'])->middleware('auth');
 Route::post('payments', [PaymentsController::class, 'store'])->middleware('auth');
+Route::get('notifications', [UserNotificationsController::class, 'show'])->middleware('auth');

@@ -12,15 +12,19 @@ class PaymentReceived extends Notification
 {
     use Queueable;
 
+    
+  protected $amount;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($amount)
     {
-        //
-    }
+        
+      $this->amount = $amount;
+  }
 
     /**
      * Get the notification's delivery channels.
@@ -30,7 +34,7 @@ class PaymentReceived extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -42,7 +46,7 @@ class PaymentReceived extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Your Laracasts Payment Was Received') // Class name is the default subject.
+                    ->subject('Your Payment was Received') // Class name is the default subject.
                     ->greeting("What's up?") // Hello is the default greeting.
                     ->line('The introduction to the notification.')
                     ->line(Lorem::sentence(20))
@@ -58,8 +62,10 @@ class PaymentReceived extends Notification
      */
     public function toArray($notifiable)
     {
+        // in some cases you might have model so you can cast the model into an array
+        //$model->toArray()
         return [
-            //
+            'amount' => $this->amount
         ];
     }
 }
