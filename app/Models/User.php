@@ -40,4 +40,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // We're assuming when the user signs up they'll provide their phone number.
+    // Or you provide in the settings are for them to fill for the user's record on database.
+    public function routeNotificationForNexmo($notification)
+    {
+        // return $this->phone_number;
+        return '6288801928310';
+    }
+
 }
