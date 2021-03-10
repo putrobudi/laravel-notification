@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ProductPurchased;
+use App\Listeners\AwardAchievements;
+use App\Listeners\SendShareableCoupon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +21,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        // handled by overriding shouldDiscoverEvents() method.
+        // ProductPurchased::class => [
+        //     AwardAchievements::class,
+        //     SendShareableCoupon::class
+        // ]
     ];
 
     /**
@@ -29,4 +37,14 @@ class EventServiceProvider extends ServiceProvider
     {
         //
     }
+    
+    public function shouldDiscoverEvents()
+    {
+        // when set to true, Laravel will automatically scan your Listener directory
+        // and read the classes using PHP reflection API.
+        // and then looks for any handle method along with its event
+        // So then it automatically builds up the $listen array above.
+        return true;
+    }
+
 }

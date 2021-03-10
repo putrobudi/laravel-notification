@@ -38,7 +38,8 @@ class PaymentReceived extends Notification
         // $notifiable lets you determine which user to send the sms to. Usually this is a user object
         // you can do like this: $notifiable->wants_SMS or $notifiable->preferences then you determine
         // when to use nexmo channel.
-        return ['mail', 'database', 'nexmo'];
+        // return ['mail', 'database', 'nexmo'];
+        return ['mail', 'database'];
     }
 
     /**
