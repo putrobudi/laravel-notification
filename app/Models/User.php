@@ -49,4 +49,13 @@ class User extends Authenticatable
         return '6288801928310';
     }
 
+    // When you create Model Relationship, you must provide the foreign key column on your table. Then you define the constraint on the migration file.
+    public function conversations() {
+      return $this->hasMany(Conversation::class);
+    }
+
+    public function replies() {
+      return $this->hasMany(Reply::class);
+    }
+
 }
