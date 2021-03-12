@@ -32,5 +32,12 @@ class AuthServiceProvider extends ServiceProvider
         //     // return true;
         //     return $conversation->user->is($user);
         // });
+
+        // Global policy for administrator
+         Gate::before(function (User $user) {
+             if ($user->id === 6) {
+                 return true;
+             }
+         });
     }
 }
