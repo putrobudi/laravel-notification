@@ -26,6 +26,11 @@ class ConversationPolicy
         // You could also use after method. So it will be executed after the update method below.
     }
 
+    public function view(User $user, Conversation $conversation)
+    {
+        return $conversation->user->is($user);
+    }
+
     /**
      * Determine whether the user can update the model.
      *

@@ -34,6 +34,8 @@ Route::post('payments', [PaymentsController::class, 'store'])->middleware('auth'
 Route::get('notifications', [UserNotificationsController::class, 'show'])->middleware('auth');
 
 Route::get('conversations', [ConversationsController::class, 'index']);
-Route::get('conversations/{conversation}', [ConversationsController::class, 'show']);
+// Middleware authorization. Let's say for an example, you can only view conversation as an administrator (which don't make sense)
+// middleware() param -> 'can:view,conversation' (just like can in blade directive), view the name of policy, conversation the wildcard from route.
+Route::get('conversations/{conversation}', [ConversationsController::class, 'show'])->middleware('can:view,conversation');
 
 Route::post('best-replies/{reply}', [ConversationBestReplyController::class, 'store']);
