@@ -34,10 +34,22 @@ class AuthServiceProvider extends ServiceProvider
         // });
 
         // Global policy for administrator
-         Gate::before(function (User $user) {
+        // From Conversation Policy
+         /* Gate::before(function (User $user) {
              if ($user->id === 6) {
                  return true;
              }
-         });
+         }); */
+
+        // From Roles and Abilities
+        // the $ability argument is from @can blade directive. The $user defaults to current authenticated user.
+        Gate::before(function($user, $ability) {
+            if ($user->abilities()->contains($ability)) {
+                return true;
+            }
+        }); // the secret sauce recipe: We created the abilities, and then we hook them into Laravel Gate functionality using 
+        // global before hook or filter. So you can extract this to your own package if you want or there is no shortage of 
+        // authorization packages on Laravel Community. So you might review those as well.
+
     }
 }

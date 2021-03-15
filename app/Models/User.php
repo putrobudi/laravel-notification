@@ -58,4 +58,35 @@ class User extends Authenticatable
       return $this->hasMany(Reply::class);
     }
 
+    public function roles() {
+      return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
+    // here we were expecting a Role instance probably because the save() or sync() required parameter. 
+    // But how about if you want to do something like this using string:
+    // $user->assignRole('manager') instead of $use->assignRole(Role $manager) ?
+    // Let's make the conditional below.
+    public function assignRole($role) {
+      
+      if (is_string($role)) {
+        // track down role from the given string.
+        $role = Role::whereName($role)->firstOrfail();
+      }
+      // Of course we can check that if there is already a role assigned to a user don't do anything.
+      // But we are going to use sync here.
+      // $this->roles()->save($role);
+      // sync: replace all of the existing records on the pivot table with this collection. And any of the records that are in the database
+      // that are not in this collection will be dropped. So give false as the second parameter so that it will only add
+      // new records if necessary.
+      $this->roles()->sync($role, false); 
+    }
+
+    // Grab all the abilities the user has. This is not eloquent relationships, so we have to call it like a standard method.
+    public function abilities() {
+      return $this->roles->map->abilities->flatten()->pluck('name')->unique();
+    }
+
 }
+
+// $user->roles = grab all the roles assigned to them.
+// $user->roles()->save($role);

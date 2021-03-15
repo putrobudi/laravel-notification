@@ -19,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Simulate a login
+auth()->loginUsingId(6);
+
+Route::get('/reports', function () {
+    return 'the secret reports';
+})->middleware('can:view_reports');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -34,8 +41,14 @@ Route::post('payments', [PaymentsController::class, 'store'])->middleware('auth'
 Route::get('notifications', [UserNotificationsController::class, 'show'])->middleware('auth');
 
 Route::get('conversations', [ConversationsController::class, 'index']);
-// Middleware authorization. Let's say for an example, you can only view conversation as an administrator (which don't make sense)
-// middleware() param -> 'can:view,conversation' (just like can in blade directive), view the name of policy, conversation the wildcard from route.
+// Middleware authorization. Let's say for an example, you can only view conversation as an administrator or author (which don't make sense)
+// middleware() param -> 'can:view,conversation' (just like can in blade directive), view the name of policy (from can in blade), conversation the wildcard from route.
 Route::get('conversations/{conversation}', [ConversationsController::class, 'show'])->middleware('can:view,conversation');
 
 Route::post('best-replies/{reply}', [ConversationBestReplyController::class, 'store']);
+
+// users
+// John => moderator, Sally => manager, Frank => owner
+// moderator => 'edit_form'
+// owner => 'view_financial_reports'
+ 
